@@ -20,7 +20,6 @@ router.route("/login").post(async (req, res) => {
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser._id },
       secret,
-      { expiresIn: "3h" }
     );
     res.status(200).json({ userId: existingUser._id, username: existingUser.username, token: token });
   } catch (err) {
@@ -30,23 +29,19 @@ router.route("/login").post(async (req, res) => {
 });
 
 router.route("/register").post(async (req, res) => {
-  const { username, email, password } = req.body;
-
+  const { name, email, password } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "User already exists" });
     const hashedPassword = await bcrypt.hash(password, 12);
     const result = await User.create({
-      username,
+      name,
       email,
       password: hashedPassword,
     });
 
-    const token = jwt.sign({ email: result.email, id: result._id }, secret, {
-      expiresIn: "3h",
-    });
+    const token = jwt.sign({ email: result.email, id: result._id }, secret);
     
-    res.status(201).json({token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     console.log(error);
