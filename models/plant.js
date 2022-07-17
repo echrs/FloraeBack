@@ -6,6 +6,6 @@ const plantSchema = new Schema({
   tasks: { type: Array }
 });
 
-const Plant = mongoose.model('Plant', plantSchema, 'plant');
+const Plant = mongoose.model('Plant', plantSchema, 'plants');
 
 module.exports = Plant;
