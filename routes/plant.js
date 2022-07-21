@@ -7,9 +7,9 @@ router.route('/').post(async (req, res) => {
   try {
     const result = await Plant.create({ nickname, name, notes, tasks });
     await User.findOneAndUpdate({ _id: userId }, { $push: { plants: result._id } });
-    res.status(200).json({ result });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ message: 'Something went wrong' });
+    res.status(500).send('Something went wrong');
     console.log(error);
   }
 });
