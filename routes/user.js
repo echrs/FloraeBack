@@ -9,7 +9,7 @@ const secret = process.env.JWT_SECRET;
 router.route('/login').post(async (req, res) => {
   const { email, password } = req.body;
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: { $regex: email, $options: 'i' } });
     if (!existingUser) return res.status(404).send("User doesn't exist");
     const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
     if (!isPasswordCorrect) return res.status(401).send('Invalid credentials');
