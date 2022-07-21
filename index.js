@@ -16,9 +16,9 @@ mongoose
   .then(() => console.log("Connected."))
   .catch((err) => console.log(err));
 
-app.use('/task', require('./routes/task'));
-app.use("/user", require("./routes/user"));
-app.use('/plant', require('./routes/plant'));
+app.use('/tasks', require('./routes/task'));
+app.use("/", require("./routes/user"));
+app.use('/plants', require('./routes/plant'));
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
