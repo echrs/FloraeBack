@@ -5,7 +5,7 @@ const plantSchema = new Schema({
   name: { type: String },
   notes: { type: String },
   tasks: { type: Array },
-  img: {type: Buffer}
+  img: {type: String}
 });
 
 const Plant = mongoose.model('Plant', plantSchema, 'plants');
