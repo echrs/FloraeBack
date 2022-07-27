@@ -16,7 +16,6 @@ mongoose
   .then(() => console.log("Connected."))
   .catch((err) => console.log(err));
 
-app.use('/tasks', require('./routes/task'));
 app.use("/", require("./routes/user"));
 app.use('/plants', require('./routes/plant'));
 
