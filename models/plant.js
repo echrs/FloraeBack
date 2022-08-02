@@ -6,6 +6,7 @@ const plantSchema = new Schema({
   notes: { type: String },
   tasks: { type: Array },
   img: { type: String },
+  userId: { type: mongoose.Schema.ObjectId }
 });
 
 const Plant = mongoose.model('Plant', plantSchema, 'plants');
