@@ -4,7 +4,7 @@ const plantSchema = new Schema({
   nickname: { type: String, required: true },
   name: { type: String },
   notes: { type: String },
-  tasks: [taskSchema],
+  tasks: { type: [taskSchema] },
   img: { type: String },
   userId: { type: mongoose.Schema.ObjectId },
 });
