@@ -7,9 +7,9 @@ const plantSchema = new Schema({
   tasks: [
     new Schema(
       {
-        name: { type: String, required: true },
-        repeatDays: { type: Number, required: true },
-        time: { type: Number },
+        taskName: { type: String, required: true },
+        taskDays: { type: Number, required: true },
+        taskTime: { type: Number },
         taskDate: { type: String, required: true },
       },
       { _id: false }
