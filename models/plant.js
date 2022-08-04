@@ -9,7 +9,7 @@ const plantSchema = new Schema({
       {
         taskName: { type: String, required: true },
         taskDays: { type: Number, required: true },
-        taskTime: { type: Number },
+        taskTime: { type: Number, required: true },
         taskDate: { type: String, required: true },
       },
       { _id: false }
