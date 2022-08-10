@@ -1,6 +1,7 @@
 const router = require('express').Router();
 let Plant = require('../models/plant');
 let auth = require('../auth');
+let axios = require('axios')
 
 router.route('/').post(auth, async (req, res) => {
   try {
@@ -52,5 +53,39 @@ router.route('/:id').delete(auth, (req, res) => {
     .then(() => res.status(200).json({ response: 'Successfully deleted' }))
     .catch((err) => res.status(500).send('Something went wrong'));
 });
+
+router.route('/identify').post(async (req, res) => {
+  try {
+    let result = await getData(req.body.plant);
+    res.status(200).send(result.data);
+  } catch (error) {
+    res.status(500).send('Something went wrong');
+    console.log(error);
+  }
+});
+
+const getData = async (plant) => {
+  let key = process.env.API_KEY;
+  let options = {
+    method: 'POST',
+    url: 'https://api.plant.id/v2/identify',
+    headers: {
+      'Content-Type': 'application/json',
+      'Api-Key': key,
+    },
+    data: {
+      images: [plant],
+      modifiers: ['crops_simple'],
+      plant_details: ['common_names', 'wiki_description'],
+    },
+  };
+
+  try {
+    let result = await axios(options);
+    return result;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 module.exports = router;
