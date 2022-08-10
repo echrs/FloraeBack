@@ -1,13 +1,30 @@
 const router = require('express').Router();
 let Plant = require('../models/plant');
-let User = require('../models/user');
 let auth = require('../auth');
 
 router.route('/').post(auth, async (req, res) => {
-  const { nickname, name, notes, tasks, img } = req.body;
-  const userId = req.userId;
   try {
-    const result = await Plant.create({ nickname, name, notes, tasks, img, userId });
+    let bulkOps = [];
+    req.body?.forEach((plant) => {
+      let obj = {
+        updateOne: {
+          filter: { _id: plant._id },
+          update: plant,
+          upsert: true,
+        },
+      };
+      bulkOps.push(obj);
+    });
+    await Plant.bulkWrite(bulkOps);
+    const userId = req.userId;
+    let result = await Plant.find({ userId });
+    const toDelete = result.filter((x) => !req.body.some((y) => x._id.toString() === y._id.toString()));
+    if (toDelete.length) {
+      toDelete.forEach(async (plant) => {
+        await Plant.findByIdAndDelete(plant._id);
+      });
+      result = await Plant.find({ userId });
+    }
     res.status(200).json(result);
   } catch (error) {
     res.status(500).send('Something went wrong');
@@ -26,7 +43,7 @@ router.route('/').get(auth, (req, res) => {
 
 router.route('/:id').patch(auth, (req, res) => {
   Plant.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => res.status(200).json({ response: "Successfully updated" }))
+    .then(() => res.status(200).json({ response: 'Successfully updated' }))
     .catch((err) => res.status(500).send('Something went wrong'));
 });
 
