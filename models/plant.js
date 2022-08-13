@@ -11,7 +11,8 @@ const plantSchema = new Schema({
         taskDays: { type: Number, required: true },
         taskTime: { type: Number, required: true },
         taskDate: { type: String, required: true },
-        taskFieldName: { type: String },
+        lastTaskDate: { type: String },
+        taskFieldName: { type: String, required: true },
       },
       { _id: false }
     ),
