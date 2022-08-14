@@ -39,10 +39,18 @@ router.route('/register').post(async (req, res) => {
   }
 });
 
-router.route('/:id').patch(auth, (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => res.status(200).json({ response: 'Successfully updated' }))
-    .catch((err) => res.status(500).send('Something went wrong'));
+router.route('/:id').patch(auth, async (req, res) => {
+  const { name, email, password } = req.body;
+  if (password) {
+    const hashedPassword = await bcrypt.hash(password, 12);
+    User.findByIdAndUpdate(req.params.id, { password: hashedPassword })
+      .then(() => res.status(200).json({ response: 'Successfully updated' }))
+      .catch((err) => res.status(500).send('Something went wrong'));
+  } else if (name && email) {
+    User.findByIdAndUpdate(req.params.id, { name: name, email: email })
+      .then(() => res.status(200).json({ response: 'Successfully updated' }))
+      .catch((err) => res.status(500).send('Something went wrong'));
+  }
 });
 
 module.exports = router;
