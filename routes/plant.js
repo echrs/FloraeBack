@@ -54,7 +54,7 @@ router.route('/:id').delete(auth, (req, res) => {
     .catch((err) => res.status(500).send('Something went wrong'));
 });
 
-router.route('/identify').post(async (req, res) => {
+router.route('/identify').post(auth, async (req, res) => {
   try {
     let result = await getData(req.body.plant);
     res.status(200).send(result.data);

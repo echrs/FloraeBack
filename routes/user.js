@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+let auth = require('../auth');
 let User = require('../models/user');
 
 const secret = process.env.JWT_SECRET;
@@ -36,6 +37,12 @@ router.route('/register').post(async (req, res) => {
   } catch (error) {
     res.status(500).send('Something went wrong');
   }
+});
+
+router.route('/:id').patch(auth, (req, res) => {
+  User.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => res.status(200).json({ response: 'Successfully updated' }))
+    .catch((err) => res.status(500).send('Something went wrong'));
 });
 
 module.exports = router;

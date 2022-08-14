@@ -16,7 +16,7 @@ mongoose
   .then(() => console.log("Connected."))
   .catch((err) => console.log(err));
 
-app.use("/", require("./routes/user"));
+app.use("/users", require("./routes/user"));
 app.use('/plants', require('./routes/plant'));
 
 app.listen(port, () => {
