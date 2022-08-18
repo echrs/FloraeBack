@@ -19,6 +19,7 @@ const plantSchema = new Schema({
   ],
   img: { type: String },
   userId: { type: mongoose.Schema.ObjectId },
+  dateCreated: { type: String, required: true},
 });
 
 const Plant = mongoose.model('Plant', plantSchema, 'plants');
